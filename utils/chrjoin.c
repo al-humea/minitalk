@@ -1,25 +1,40 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_putstr_fd.c                                     :+:      :+:    :+:   */
+/*   chrjoin.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: al-humea <al-humea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/11/14 13:12:56 by al-humea          #+#    #+#             */
-/*   Updated: 2021/09/02 16:46:34 by al-humea         ###   ########.fr       */
+/*   Created: 2021/09/02 15:06:06 by al-humea          #+#    #+#             */
+/*   Updated: 2021/09/02 16:40:58 by al-humea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minitalk.h"
 
-void	ft_putstr_fd(char *s, int fd)
+void	chrjoin(char **str, char c)
 {
-	unsigned int	i;
+	int		i;
+	char	*nstr;
 
-	if (!s)
-		return ;
 	i = 0;
-	while (s[i])
+	if (*str == NULL)
+		*str = ft_strdup("");
+	if (c == 0)
+		return ;
+	nstr = malloc(ft_strlen(*str) + 2);
+	if (!nstr)
+		exit(EXIT_FAILURE);
+	while ((*str)[i])
+	{
+		nstr[i] = (*str)[i];
 		i++;
-	write(fd, s, i);
+	}
+	nstr[i] = c;
+	i++;
+	nstr[i] = '\0';
+	free(*str);
+	*str = NULL;
+	*str = nstr;
+	return ;
 }

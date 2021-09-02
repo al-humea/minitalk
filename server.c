@@ -6,37 +6,26 @@
 /*   By: al-humea <al-humea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/23 11:26:14 by al-humea          #+#    #+#             */
-/*   Updated: 2021/09/01 11:46:55 by al-humea         ###   ########.fr       */
+/*   Updated: 2021/09/02 16:49:01 by al-humea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "includes/minitalk.h"
 
-void	chrjoin(char **str, char c)
+int	acknowledge(int *cpid, siginfo_t *siginfo)
 {
-	int		i;
-	char	*nstr;
-
-	i = 0;
-	if (*str == NULL)
-		*str = ft_strdup("");
-	if (c == 0)
-		return ;
-	nstr = malloc(ft_strlen(*str) + 2);
-	if (!nstr)
-		exit(EXIT_FAILURE);
-	while ((*str)[i])
+	if (*cpid == 0)
 	{
-		nstr[i] = (*str)[i];
-		i++;
+		*cpid = siginfo->si_pid;
+		kill(*cpid, SIGUSR1);
+		return (0);
 	}
-	nstr[i] = c;
-	i++;
-	nstr[i] = '\0';
-	free(*str);
-	*str = NULL;
-	*str = nstr;
-	return ;
+	if (siginfo->si_pid != *cpid)
+	{
+		kill(siginfo->si_pid, SIGUSR2);
+		return (0);
+	}
+	return (1);
 }
 
 void	print(int *c, int *ci, char **s, int *cpid)
@@ -59,22 +48,6 @@ void	print(int *c, int *ci, char **s, int *cpid)
 	kill(*cpid, SIGUSR1);
 }
 
-int	acknowledge(int *cpid, siginfo_t *siginfo)
-{
-	if (*cpid == 0)
-	{
-		*cpid = siginfo->si_pid;
-		kill(*cpid, SIGUSR1);
-		return (0);
-	}
-	if (siginfo->si_pid != *cpid)
-	{
-		kill(siginfo->si_pid, SIGUSR2);
-		return (0);
-	}
-	return (1);
-}
-
 /*
 **SIGNAL HANDLER
 **CREATES A CHAR FROM THE BITS OF A REVERSED BYTE AND ADDS IT TO AN STR
@@ -91,27 +64,23 @@ int	acknowledge(int *cpid, siginfo_t *siginfo)
 **		PRINT
 **
 */
-void	makechar(int sig, siginfo_t *siginfo, void *context)
+void	makechar(int sig, siginfo_t *siginfo, __attribute__((unused))void *context)
 {
 	static int	cpid = 0;
 	static char	*s = NULL;
 	static int	c = 0x80;
 	static int	ci = 0;
 
-	(void)context;
 	if (sig == SIGUSR1)
 	{
 		if (!acknowledge(&cpid, siginfo))
 			return ;
 		c >>= 1;
 		c += 0x80;
-		ci++;
 	}
 	if (sig == SIGUSR2)
-	{
 		c >>= 1;
-		ci++;
-	}
+	ci++;
 	if (ci == 8)
 	{
 		print(&c, &ci, &s, &cpid);

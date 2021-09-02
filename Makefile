@@ -6,7 +6,7 @@
 #    By: al-humea <al-humea@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/08/27 19:23:51 by al-humea          #+#    #+#              #
-#    Updated: 2021/09/01 11:47:28 by al-humea         ###   ########.fr        #
+#    Updated: 2021/09/02 15:06:38 by al-humea         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -24,12 +24,13 @@ UTILS=		utils/ft_putstr_fd.c\
 			utils/ft_putchar_fd.c\
 			utils/ft_itoa.c\
 			utils/display_pid.c\
+			utils/chrjoin.c\
 
 SERVER=		server
 
 CLIENT=		client
 
-CFLAGS=		-Wall -Wextra -Werror
+CFLAGS=		-Wall -Wextra -Werror -g -pg
 
 MV=			mv
 
