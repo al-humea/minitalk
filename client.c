@@ -6,13 +6,13 @@
 /*   By: al-humea <al-humea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/20 17:05:20 by al-humea          #+#    #+#             */
-/*   Updated: 2021/09/02 15:04:05 by al-humea         ###   ########.fr       */
+/*   Updated: 2021/09/03 15:21:40 by al-humea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "includes/minitalk.h"
 
-static const char	*g_str;
+static const char	*g_str = NULL;
 
 /*
 **SIMPLY CHECKS IF PID IS VALID
@@ -119,6 +119,5 @@ int	main(int ac, char **av)
 	sigaction(SIGUSR2, &sa, NULL);
 	kill(pid, SIGUSR1);
 	while (1)
-	{
-	}
+		pause();
 }

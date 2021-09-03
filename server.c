@@ -6,7 +6,7 @@
 /*   By: al-humea <al-humea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/23 11:26:14 by al-humea          #+#    #+#             */
-/*   Updated: 2021/09/02 16:49:01 by al-humea         ###   ########.fr       */
+/*   Updated: 2021/09/03 15:22:10 by al-humea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,8 @@ void	print(int *c, int *ci, char **s, int *cpid)
 **		PRINT
 **
 */
-void	makechar(int sig, siginfo_t *siginfo, __attribute__((unused))void *context)
+void	makechar(int sig, siginfo_t *siginfo,
+							__attribute__((unused))void *context)
 {
 	static int	cpid = 0;
 	static char	*s = NULL;
@@ -89,6 +90,13 @@ void	makechar(int sig, siginfo_t *siginfo, __attribute__((unused))void *context)
 	kill(cpid, SIGUSR1);
 }
 
+void	kill_handler(int signum)
+{
+	if (signum == SIGINT || (signum == SIGQUIT))
+		ft_putstr_fd("\nServer stopped.\n", 1);
+	exit(EXIT_SUCCESS);
+}
+
 int	main(void)
 {
 	struct sigaction	sa;
@@ -101,7 +109,8 @@ int	main(void)
 	sa.sa_sigaction = makechar;
 	sigaction(SIGUSR1, &sa, NULL);
 	sigaction(SIGUSR2, &sa, NULL);
+	signal(SIGINT, kill_handler);
+	signal(SIGQUIT, kill_handler);
 	while (1)
-	{
-	}
+		pause();
 }
