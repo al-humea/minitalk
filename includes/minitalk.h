@@ -6,7 +6,7 @@
 /*   By: al-humea <al-humea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/23 11:20:47 by al-humea          #+#    #+#             */
-/*   Updated: 2021/09/03 15:28:16 by al-humea         ###   ########.fr       */
+/*   Updated: 2021/09/07 19:57:54 by al-humea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,6 @@ void	chrjoin(char **s, char c);
 int		acknowledge(int *cpid, siginfo_t *siginfo);
 void	print(int *c, int *ci, char **s, int *cpid);
 void	makechar(int sig, siginfo_t *siginfo, void *context);
-void	kill_handler(int signum);
 //client
 int		is_pid(char *pid_str);
 void	send_bit(int *i, int *ci, int *c, int PID);

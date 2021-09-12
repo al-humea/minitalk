@@ -6,7 +6,7 @@
 /*   By: al-humea <al-humea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/20 17:05:20 by al-humea          #+#    #+#             */
-/*   Updated: 2021/09/03 15:21:40 by al-humea         ###   ########.fr       */
+/*   Updated: 2021/09/07 20:00:04 by al-humea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,28 +96,39 @@ void	client(int sig, siginfo_t *siginfo, void *context)
 	}
 }
 
+void	kill_handler(int signum)
+{
+	if (g_str != NULL)
+		return ;
+	else
+		kill(getpid(), signum);
+}
+
 int	main(int ac, char **av)
 {
 	int					pid;
 	struct sigaction	sa;
+	struct sigaction	sk;
 
 	pid = 0;
-	if (ac > 1)
-		pid = is_pid(av[1]);
-	if (ac < 3 || pid < 0)
+	if (ac < 3 || is_pid(av[1]) < 0)
 	{
 		write(1, "Missing or invalid args\n", 24);
 		exit (EXIT_FAILURE);
 	}
+	pid = is_pid(av[1]);
 	g_str = ft_strdup(av[2]);
 	sigemptyset(&sa.sa_mask);
 	sigaddset(&sa.sa_mask, SIGQUIT);
 	sigaddset(&sa.sa_mask, SIGINT);
 	sa.sa_flags = SA_SIGINFO;
 	sa.sa_sigaction = client;
+	sk.sa_handler = kill_handler;
 	sigaction(SIGUSR1, &sa, NULL);
 	sigaction(SIGUSR2, &sa, NULL);
+	sigaction(SIGINT, &sk, NULL);
+	sigaction(SIGQUIT, &sk, NULL);
 	kill(pid, SIGUSR1);
 	while (1)
-		pause();
+		sleep(42);
 }

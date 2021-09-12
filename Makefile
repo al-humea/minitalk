@@ -6,17 +6,17 @@
 #    By: al-humea <al-humea@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/08/27 19:23:51 by al-humea          #+#    #+#              #
-#    Updated: 2021/09/03 15:13:48 by al-humea         ###   ########.fr        #
+#    Updated: 2021/09/07 22:22:53 by al-humea         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 CC=		gcc
 
-INCLUDES=		./includes/minitalk.h
+INCLUDES=	./includes/minitalk.h
 
-SRV_SRC=		server.c
+SRV_SRC=	server.c
 
-CLT_SRC=		client.c
+CLT_SRC=	client.c
 
 UTILS=		utils/ft_putstr_fd.c\
 			utils/ft_strdup.c\
@@ -50,6 +50,8 @@ $(CLIENT):	$(CLT_OBJ)
 
 
 all:	$(SERVER) $(CLIENT)
+
+bonus: all
 
 clean:
 	$(RM) $(SRV_OBJ)

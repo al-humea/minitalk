@@ -6,7 +6,7 @@
 /*   By: al-humea <al-humea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/23 11:26:14 by al-humea          #+#    #+#             */
-/*   Updated: 2021/09/03 15:22:10 by al-humea         ###   ########.fr       */
+/*   Updated: 2021/09/07 22:01:47 by al-humea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,16 +90,16 @@ void	makechar(int sig, siginfo_t *siginfo,
 	kill(cpid, SIGUSR1);
 }
 
-void	kill_handler(int signum)
+void	kill_handler(__attribute__((unused))int signum)
 {
-	if (signum == SIGINT || (signum == SIGQUIT))
-		ft_putstr_fd("\nServer stopped.\n", 1);
+	ft_putstr_fd("\nServer stopped.\n", 1);
 	exit(EXIT_SUCCESS);
 }
 
 int	main(void)
 {
 	struct sigaction	sa;
+	struct sigaction	sk;
 
 	display_pid();
 	sigemptyset(&sa.sa_mask);
@@ -107,10 +107,11 @@ int	main(void)
 	sigaddset(&sa.sa_mask, SIGINT);
 	sa.sa_flags = SA_SIGINFO;
 	sa.sa_sigaction = makechar;
+	sk.sa_handler = kill_handler;
 	sigaction(SIGUSR1, &sa, NULL);
 	sigaction(SIGUSR2, &sa, NULL);
-	signal(SIGINT, kill_handler);
-	signal(SIGQUIT, kill_handler);
+	sigaction(SIGINT, &sk, NULL);
+	sigaction(SIGQUIT, &sk, NULL);
 	while (1)
-		pause();
+		sleep(42);
 }
